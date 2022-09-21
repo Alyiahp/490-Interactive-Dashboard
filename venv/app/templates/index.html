@@ -1,0 +1,6 @@
+﻿<{% extends "base.html" %}
+    {% block content %}
+    <h1>Hi, {{ user.username }}!</h1>
+    {{ data.to_html(classes="table table-striped") | safe}}
+    <h1>Testing if this method in routes.py works, {{number}}!</h1>
+{% endblock %}
