@@ -21,7 +21,7 @@ def index():
     cursor = conn.cursor()
 
     #queries
-    q = ("SELECT * FROM Occupations;")
+    q = ("SELECT * FROM OCCUPATIONS_TWO;")
 
     occ = pd.DataFrame()
 
