@@ -297,19 +297,19 @@
 </div>
 
 <!-- Collect occupation and household data -->
-<form>
+<form  method="post">
 <div id="data" class="container-fluid">
   <h1 class="text-center">Enter household information</h1>
   <div class="border">&nbsp;</div>
   <p></p>
   <div id="selectOcc" class="text-center">
     <p class="text-center">Select your occupation:
-    <select id="occSelect" name="occSelect">
-      <option  disabled selected>Select</option>
-      <option>Occupation 1</option>
-      <option>Occupation 2</option>
-      <option>Occupation 3</option>
-    </select>
+        <select id="occSelect" name="occSelect" method="GET">
+            <option disabled selected>Select</option>
+            {% for oc in occupations %}
+            <option value={{oc}}>{{oc}}</option>"
+            {% endfor %}
+        </select>
     </p>
 </div>
 

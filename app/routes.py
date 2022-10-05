@@ -8,7 +8,7 @@ import pyodbc
 
 #app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.route('/')
-@app.route('/index')
+@app.route('/index', methods=['GET'])
 def index():
 
     #connecting to the data base
@@ -21,7 +21,7 @@ def index():
     cursor = conn.cursor()
 
     #queries
-    q = ("SELECT * FROM OCCUPATIONS_TWO;")
+    q = ("SELECT * FROM OCCUPATIONS;")
 
     occ = pd.DataFrame()
 
@@ -29,5 +29,11 @@ def index():
     occ = pd.read_sql_query(q, conn)
     conn.close
     
+    send = occ['OCC_TITLE']
     #sending data to html files
-    return render_template('index.html', data = occ)
+    return render_template('index.html', occupations = send)
+
+
+@app.route('/populate_map', methods=['POST'])
+def populate_map():
+     occupation = request.form['occSelect']
