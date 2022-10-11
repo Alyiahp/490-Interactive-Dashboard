@@ -4,36 +4,188 @@ from app import app
 import pandas as pd
 import numpy as np
 import pyodbc
+import json
+import requests
+import plotly.express as px
+import geopandas as gpd
+from urllib.request import urlopen
+
+#connecting to the data base constants
+server = 'statefinder.database.windows.net'
+database = 'LivingWage'
+username = 'statefinder'
+password = '{FAll2022}'
+driver = '{ODBC Driver 17 for SQL Server}'
+conn = pyodbc.connect('DRIVER=' + driver + ';SERVER=tcp:' + server + ';PORT=1433;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+cursor = conn.cursor()
+
+#creating the squeries
+q1 = ("SELECT * FROM OCCUPATIONS;")
+q2 = ("SELECT * FROM One_Adult;")
+
+#creating the data frames
+occ = pd.DataFrame()
+one_adult = pd.DataFrame()
+
+#saving sql tables as panda dataframes
+occ = pd.read_sql_query(q1, conn)
+one_adult = pd.read_sql_query(q2, conn)
+conn.close
 
 
-#app.config['TEMPLATES_AUTO_RELOAD'] = True
+#temperary reads
+#one_adult = pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '1_Adult', header = 0))
+two_adults_1w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_1_Working', header = 0))
+two_adults_2w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_Both_Working', header = 0))
+
+
+
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.route('/')
 @app.route('/index', methods=['GET'])
+
 def index():
 
-    #connecting to the data base
-    server = 'statefinder.database.windows.net'
-    database= 'LivingWage'
-    username = 'statefinder'
-    password = '{FAll2022}'
-    driver = '{ODBC Driver 17 for SQL Server}'
-    conn = pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password)
-    cursor = conn.cursor()
+    #query
+    #q = ("SELECT * FROM OCCUPATIONS;")
+    #occ = pd.DataFrame()
 
-    #queries
-    q = ("SELECT * FROM OCCUPATIONS;")
-
-    occ = pd.DataFrame()
-
-    #saving sql tables as panda dataframes
-    occ = pd.read_sql_query(q, conn)
-    conn.close
+    #saving sql table as panda dataframe
+    #occ = pd.read_sql_query(q, conn)
+    #conn.close
     
     send = occ['OCC_TITLE']
     #sending data to html files
     return render_template('index.html', occupations = send)
 
 
-@app.route('/populate_map', methods=['POST'])
-def populate_map():
+@app.route('/')
+@app.route('/test', methods=['POST'])
+def test():
+    
+    #getting data from index form
      occupation = request.form['occSelect']
+     level = request.form['levelSelect']
+     adult_num = request.form['adultSelect']
+     kid_num = request.form['kidSelect']
+
+    
+
+    #getting the users wages per level and occupation from table
+     if level == "Entry level":
+        s = pd.DataFrame(occ.loc[occ['OCC_TITLE'] == occupation])
+        user_wage = s['A_PCT10']
+     elif level == "Intermediate level":
+        s = pd.DataFrame(occ.loc[occ['OCC_TITLE'] == occupation])
+        user_wage = s['A_PCT25']
+     else:
+        s = pd.DataFrame(occ.loc[occ['OCC_TITLE'] == occupation])
+        user_wage = s['A_PCT75']
+
+     if user_wage.empty:
+         fig = "No Data"
+         b = 4
+     else:
+         #selects table based on number of working adults
+         if adult_num == "1 adult":
+             adult = one_adult
+         elif adult_num == "2 adults, 1 working":  
+             adult = two_adults_1w
+         else:
+             adult = two_adults_2w
+     
+         #selects metro wage based on kids
+         if kid_num == "1 child":
+              metro_wage = adult[['metro_area','state_name','one_kids_year']]
+         elif kid_num == "2 children":
+              metro_wage = adult[['metro_area','state_name','two_kids_year']]
+         else:
+             metro_wage = adult[['metro_area','state_name','three_kids_year']]
+    
+       
+         #calculated difference between user wage and livable wage.
+         b = calculate_difference(metro_wage,user_wage)
+         t = b.to_html()
+    
+     
+  
+
+         #Generating shapefiles for map generation
+
+         #getting geojson file
+         url = 'https://raw.githubusercontent.com/Alyiahp/geojsons/main/cb_2018_us_cbsa_20m.geojson'
+         f = requests.get(url)
+         data = f.json()
+  
+         missing = []
+         areas_geo = []
+         tmp = b.set_index('ID')
+
+       #Looping over GeoJSON file
+         for area in data['features']:
+    
+          area_name = area['properties']['NAME'] 
+    
+        # Checking if that area is in the dataset
+          if area_name in tmp.index:
+        
+            # Getting information from both GeoJSON file and dataFrame
+             geometry = area['geometry']
+        
+            # Adding 'id' 
+             areas_geo.append({
+                'type': 'Feature',
+                'geometry': geometry,
+                'id':area_name
+            })
+          # if area is not found and is classified as metro M1  
+          else:
+              if area['properties']['LSAD'] == "M1":
+                    missing.append(area_name)
+
+         metro_json = {'type': 'FeatureCollection', 'features': areas_geo}
+         
+         #if max residual income is negative all reds for the map
+         if b['dif'].max() < 0:
+             fig = px.choropleth(b, geojson = metro_json, locations='ID', color='dif',                  
+                               range_color=(b['dif'].min(),b['dif'].max()),
+                               color_continuous_scale= 'Reds_r',                              
+                               scope="usa",
+                               labels={'dif':'Leftover Income'})
+             fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+         #if minimum residual income is positive then all greens for the map
+         elif b['dif'].min() >0:
+              fig = px.choropleth(b, geojson = metro_json, locations='ID', color='dif',                  
+                               range_color=(b['dif'].min(),b['dif'].max()),
+                               color_continuous_scale='Greens_r',
+                               color_continuous_midpoint=0,
+                               scope="usa",
+                               labels={'dif':'Leftover Income'})
+              fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+         else:
+              fig = px.choropleth(b, geojson = metro_json, locations='ID', color='dif',                  
+                               range_color=(b['dif'].min(),b['dif'].max()),
+                               color_continuous_scale=['red','green'],
+                               color_continuous_midpoint=0,
+                               scope="usa",
+                               labels={'dif':'Leftover Income'})
+              fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+       
+
+     
+     return render_template('test.html', table = b, fig = fig)
+
+
+
+def calculate_difference(metro_wage, user_wage):
+    #Making ID match geogson file names
+    metro_wage['metro_area'] = metro_wage['metro_area'].apply(lambda x: x.split('_')[0])
+    metro_wage['ID'] = metro_wage['metro_area'].fillna('') + ', ' + metro_wage['state_name'].fillna('')
+   #metro_wage['ID'] = metro_wage['ID'].str.strip(', ')
+
+    map_values = pd.DataFrame(metro_wage['ID'])
+    map_values['dif'] = int(user_wage) - metro_wage.iloc[:,2].astype(int)
+    map_values =  map_values.sort_values(by=['dif'], ascending=False)
+
+    return map_values
