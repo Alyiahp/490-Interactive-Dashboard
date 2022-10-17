@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="post">
+        <input type="submit" formaction ='/us_map' value="back to us">
+    </form>
+    {{ fig2.to_html() | safe}}
+{% endblock %}
