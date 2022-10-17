@@ -1,5 +1,4 @@
-#from flask import flask
-from flask import render_template, request
+from flask import Flask, render_template, request
 from app import app
 import pandas as pd
 import numpy as np
@@ -22,6 +21,7 @@ cursor = conn.cursor()
 #creating the squeries
 q1 = ("SELECT * FROM OCCUPATIONS;")
 q2 = ("SELECT * FROM One_Adult;")
+q3 = ("SELECT * FROM Two_Adults_One_Working;")
 
 #creating the data frames
 occ = pd.DataFrame()
@@ -30,12 +30,13 @@ one_adult = pd.DataFrame()
 #saving sql tables as panda dataframes
 occ = pd.read_sql_query(q1, conn)
 one_adult = pd.read_sql_query(q2, conn)
+two_adults_1w = pd.read_sql_query(q3, conn)
 conn.close
 
 
 #temperary reads
 #one_adult = pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '1_Adult', header = 0))
-two_adults_1w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_1_Working', header = 0))
+#two_adults_1w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_1_Working', header = 0))
 two_adults_2w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_Both_Working', header = 0))
 
 
@@ -57,6 +58,17 @@ def index():
     send = occ['OCC_TITLE']
     #sending data to html files
     return render_template('index.html', occupations = send)
+
+@app.route('/')
+@app.route('/about', methods=['GET'])
+
+def about():
+    #render about page
+    return render_template('about.html')
+
+@app.route('/')
+@app.route('/contact', methods=['GET', 'POST'])
+#def contact():
 
 
 @app.route('/')
@@ -95,7 +107,9 @@ def test():
              adult = two_adults_2w
      
          #selects metro wage based on kids
-         if kid_num == "1 child":
+         if kid_num == "0 children":
+              metro_wage = adult[['metro_area','state_name','zero_kids_year']]
+         elif kid_num == "1 child":
               metro_wage = adult[['metro_area','state_name','one_kids_year']]
          elif kid_num == "2 children":
               metro_wage = adult[['metro_area','state_name','two_kids_year']]
