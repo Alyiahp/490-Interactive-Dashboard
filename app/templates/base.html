@@ -303,70 +303,35 @@ a:active {
   text-decoration: none;
 }
 
-/* Contact form */
-form label {
-  font-size: 1.2em;
-  font-weight: bold;
+#contactForm {
+  background: #f7f7f7;
+  padding: 20px;
+  max-width: 500px;
+}
+#contactForm * {
+  box-sizing: border-box;
+}
+#contactForm input, #contactForm label, #contactForm textarea {
   display: block;
+  width: 100%;
+}
+#contactForm textarea {
+  height: 150px;
+}
+#contactForm input {
+  padding: 10px;
+}
+#contactForm label {
   padding: 10px 0;
 }
- 
-form input#name,
-form input#email,
-form input#subject {
-  width: 400px;
-  background-color: #fafafa;
-  -webkit-border-radius: 3px;
-     -moz-border-radius: 3px;
-          border-radius: 3px;
-  border: 1px solid #cccccc;
-  padding: 5px;
-  font-size: 1.1em;
-}
- 
-form textarea#message {
-  width: 500px;
-  height: 100px;
-  background-color: #fafafa;
-  -webkit-border-radius: 3px;
-     -moz-border-radius: 3px;
-          border-radius: 3px;
-  border: 1px solid #cccccc;
-  margin-bottom: 10px;
-  padding: 5px;
-  font-size: 1.1em;
-}
- 
-form input#submit {
-  display: block;
-  -webkit-border-radius: 3px; 
-     -moz-border-radius: 3px;
-          border-radius: 3px;
-  border:1px solid #d8d8d8;
-  padding: 10px; 
-  font-weight:bold; 
-  text-align: center; 
-  color: #000000; 
-  background-color: #f4f4f4;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f4f4), color-stop(100%, #e5e5e5));
-  background-image: -webkit-linear-gradient(top, #f4f4f4, #e5e5e5);
-  background-image: -moz-linear-gradient(top, #f4f4f4, #e5e5e5);
-  background-image: -ms-linear-gradient(top, #f4f4f4, #e5e5e5);
-  background-image: -o-linear-gradient(top, #f4f4f4, #e5e5e5);
-  background-image: linear-gradient(top, #f4f4f4, #e5e5e5);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f4f4f4, endColorstr=#e5e5e5);
-}
- 
-form input#submit:hover{
+#contactForm input[type="submit"] {
+  margin-top: 20px;
+  border: 0;
+  color: #fff;
+  background: #cb1111;
   cursor: pointer;
-  border:1px solid #c1c1c1; 
-  background-color: #dbdbdb;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dbdbdb), color-stop(100%, #cccccc));
-  background-image: -webkit-linear-gradient(top, #dbdbdb, #cccccc);
-  background-image: -moz-linear-gradient(top, #dbdbdb, #cccccc);
-  background-image: -ms-linear-gradient(top, #dbdbdb, #cccccc);
-  background-image: -o-linear-gradient(top, #dbdbdb, #cccccc);
-  background-image: linear-gradient(top, #dbdbdb, #cccccc);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#dbdbdb, endColorstr=#cccccc);
 }
+#contactForm input[type="submit"]:disabled { background: #424242; }
   </style>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
@@ -394,7 +359,7 @@ form input#submit:hover{
 </nav>
     {% block content %}{% endblock %}
     <div class="footer text-center">
-        <p>© 2022 Alyiah Proctor, Anne Nguyen, Darlyn Menendez, and Emily Crabtree</p>
+        <p>© 2022 Alyiah Proctor, Anne Nguyen, Darlyn Mendez, and Emily Crabtree</p>
     </div>
       
       <script>
@@ -432,6 +397,21 @@ form input#submit:hover{
           });
         });
       })
+      // (A) SEND CONTACT FORM
+      function send () {
+        // (A1) PREVENT MULTIPLE SUBMIT
+        document.getElementById("contact").disabled = true;
+        // (A2) COLLECT FORM DATA
+        let data = new FormData(document.getElementById("contactForm"));
+        // (A3) SEND!
+        fetch("/send", { method:"POST", body:data })
+        .then((res) => {
+            if (res.status==200) { location.href = "/thank"; }
+            else { alert("Oops an error has occured. 1"); }
+        })
+        .catch((err) => { alert("Oops an error has occured. 2"); });
+        return false;
+}
       </script>
       
       </body>

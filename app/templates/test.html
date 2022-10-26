@@ -1,7 +1,12 @@
 ﻿{% extends "base.html" %}
 <!DOCTYPE html>
-
-{% block content %}
-{{ fig.to_html() | safe}}
-{{ table.to_html() | safe}}
-{% endblock %}
+<head></head>
+<body>
+    {% block content %}
+    <div class="container-fluid" style="padding-top: 40px">
+    {{ fig.to_html() | safe}}
+    {{ table.to_html() | safe}}
+    </div>
+    {% endblock %}
+</body>
+</html>
