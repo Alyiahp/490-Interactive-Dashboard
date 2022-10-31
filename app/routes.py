@@ -113,6 +113,7 @@ def test():
      kid_num = request.form['kidSelect']
 
     
+     occ.fillna(0, inplace=True)
 
     #getting the users wages per level and occupation from table
      if level == "Entry level":
@@ -125,7 +126,7 @@ def test():
         s = pd.DataFrame(occ.loc[occ['OCC_TITLE'] == occupation])
         user_wage = s['A_PCT75']
 
-     if user_wage.empty:
+     if (user_wage == 0).any() :
          fig = "No Data"
          b = 4
      else:
@@ -191,30 +192,32 @@ def test():
          metro_json = {'type': 'FeatureCollection', 'features': areas_geo}
          
          #if max residual income is negative all reds for the map
-         if b['dif'].max() < 0:
-             fig = px.choropleth(b, geojson = metro_json, locations='ID', color='dif',                  
-                               range_color=(b['dif'].min(),b['dif'].max()),
+         if b['Residual Income'].max() < 0:
+             fig = px.choropleth(b, geojson = metro_json, locations='ID', color='Residual Income',                  
+                               range_color=(b['Residual Income'].min(),b['Residual Income'].max()),
                                color_continuous_scale= 'Reds_r',                              
                                scope="usa",
-                               labels={'dif':'Leftover Income'})
+                               labels={'Residual Income':'Leftover Income'})
              fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
          #if minimum residual income is positive then all greens for the map
-         elif b['dif'].min() >0:
-              fig = px.choropleth(b, geojson = metro_json, locations='ID', color='dif',                  
-                               range_color=(b['dif'].min(),b['dif'].max()),
+         elif b['Residual Income'].min() >0:
+              fig = px.choropleth(b, geojson = metro_json, locations='ID', color='Residual Income',                  
+                               range_color=(b['Residual Income'].min(),b['Residual Income'].max()),
                                color_continuous_scale='Greens_r',
                                color_continuous_midpoint=0,
                                scope="usa",
-                               labels={'dif':'Leftover Income'})
+                               labels={'Residual Income':'Leftover Income'})
               fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+              # else the map has a combination of green and red
          else:
-              fig = px.choropleth(b, geojson = metro_json, locations='ID', color='dif',                  
-                               range_color=(b['dif'].min(),b['dif'].max()),
+              average = b["Residual Income"].mean()
+              fig = px.choropleth(b, geojson = metro_json, locations='ID', color='Residual Income',                  
+                               range_color=(b["Residual Income"].mean(),0),
                                color_continuous_scale=['red','green'],
-                               color_continuous_midpoint=0,
                                scope="usa",
-                               labels={'dif':'Leftover Income'})
+                               labels={'Residual Income':'Leftover Income'})
               fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
        
 
@@ -230,7 +233,8 @@ def calculate_difference(metro_wage, user_wage):
    #metro_wage['ID'] = metro_wage['ID'].str.strip(', ')
 
     map_values = pd.DataFrame(metro_wage['ID'])
-    map_values['dif'] = int(user_wage) - metro_wage.iloc[:,2].astype(int)
-    map_values =  map_values.sort_values(by=['dif'], ascending=False)
+    map_values['Residual Income'] = int(user_wage) - metro_wage.iloc[:,2].astype(int)
+    map_values =  map_values.sort_values(by=['Residual Income'], ascending=False)
+    map_values = map_values.reset_index(drop=True)
 
     return map_values
