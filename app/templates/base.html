@@ -38,7 +38,17 @@
     height: 2px;
     margin: 0px auto;
     border-bottom: 1px solid #818181;
-}
+  }
+  .contactborder {
+    width: 11%;
+    height: 2px;
+    border-bottom: 1px solid #818181;
+ }
+ .aboutborder {
+    width: 18%;
+    height: 2px;
+    border-bottom: 1px solid #818181;
+ }
   .jumbotron {
     background-color: #DF362D;
     color: #f5f0e1;
@@ -46,8 +56,9 @@
     font-family: Montserrat, sans-serif;
   }
   .container-fluid {
-    padding-left: 50px;
-    padding-right: 50px;
+    margin-left: 130px;
+    margin-right: 130px;
+    padding-bottom: 3%;
     background-color: #f5f0e1;
   }
   .bg-grey {
@@ -130,11 +141,10 @@
     color: #fff;
   }
   .footerc{
-    position: fixed;
-    bottom: 0;
-    padding-left: 50px;
-    padding-right: 50px;
-    background-color: #f5f0e1;
+    position: fixed;     
+       text-align: center;    
+       bottom: 0px; 
+       width: 100%;
   }
   .navbar {
     margin-bottom: 0;
@@ -159,8 +169,8 @@
     color: #fff !important;
   }
   footer {
-    position: fixed;
-    bottom: 0;
+    position: absolute; 
+    bottom: 5px;
 }
   footer .glyphicon {
     font-size: 20px;
@@ -303,35 +313,77 @@ a:active {
   text-decoration: none;
 }
 
-#contactForm {
-  background: #f7f7f7;
-  padding: 20px;
-  max-width: 500px;
-}
-#contactForm * {
-  box-sizing: border-box;
-}
-#contactForm input, #contactForm label, #contactForm textarea {
+/* Contact form */
+form label {
+  font-size: 1.2em;
+  font-weight: bold;
   display: block;
-  width: 100%;
-}
-#contactForm textarea {
-  height: 150px;
-}
-#contactForm input {
-  padding: 10px;
-}
-#contactForm label {
   padding: 10px 0;
 }
-#contactForm input[type="submit"] {
-  margin-top: 20px;
-  border: 0;
-  color: #fff;
-  background: #cb1111;
-  cursor: pointer;
+ 
+form input#name,
+form input#email,
+form input#subject {
+  width: 400px;
+  background-color: #fafafa;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  font-size: 1.1em;
 }
-#contactForm input[type="submit"]:disabled { background: #424242; }
+ 
+form textarea#message {
+  width: 500px;
+  height: 100px;
+  background-color: #fafafa;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  border: 1px solid #cccccc;
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 1.1em;
+}
+ 
+form input#submit {
+  display: block;
+  -webkit-border-radius: 3px; 
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  border:1px solid #d8d8d8;
+  padding: 10px; 
+  font-weight:bold; 
+  text-align: center; 
+  color: #000000; 
+  background-color: #f4f4f4;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f4f4), color-stop(100%, #e5e5e5));
+  background-image: -webkit-linear-gradient(top, #f4f4f4, #e5e5e5);
+  background-image: -moz-linear-gradient(top, #f4f4f4, #e5e5e5);
+  background-image: -ms-linear-gradient(top, #f4f4f4, #e5e5e5);
+  background-image: -o-linear-gradient(top, #f4f4f4, #e5e5e5);
+  background-image: linear-gradient(top, #f4f4f4, #e5e5e5);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f4f4f4, endColorstr=#e5e5e5);
+}
+ 
+form input#submit:hover{
+  cursor: pointer;
+  border:1px solid #c1c1c1; 
+  background-color: #dbdbdb;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dbdbdb), color-stop(100%, #cccccc));
+  background-image: -webkit-linear-gradient(top, #dbdbdb, #cccccc);
+  background-image: -moz-linear-gradient(top, #dbdbdb, #cccccc);
+  background-image: -ms-linear-gradient(top, #dbdbdb, #cccccc);
+  background-image: -o-linear-gradient(top, #dbdbdb, #cccccc);
+  background-image: linear-gradient(top, #dbdbdb, #cccccc);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#dbdbdb, endColorstr=#cccccc);
+}
+
+/* Message flashing */
+.flash {
+  background-color: #FBB0B0;
+  padding: 10px;
+  width: 400px;
+}
   </style>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
@@ -357,7 +409,7 @@ a:active {
   </div>
 </nav>
     {% block content %}{% endblock %}
-    <div class="footer text-center">
+    <div class="footerc text-center" style="position: relative">
         <p>© 2022 Alyiah Proctor, Anne Nguyen, Darlyn Mendez, and Emily Crabtree</p>
     </div>
       

@@ -1,15 +1,28 @@
 {% extends "base.html" %}
     {% block content %}
     <div class="container-fluid" style="padding-top: 50px">
-        <h3 class="text-center">About State Finder</h3>
-        <div class="border">&nbsp;</div>
+        <h3 style="text-indent: 3px"> About State Finder</h3>
+        <div class="aboutborder">&nbsp;</div>
         <p></p>
-        <p>The State Finder web application was created in Fall of 2022 as a Senior Capstone project by Alyiah Proctor, Anne Nguyen, Darlyn Mendez, 
-            and Emily Crabtree. The goal of the web application is to be a tool to aid people undergoing a career transition, job search, and/or 
-            location change, and to make those processes less stressful. The State Finder web application collects user data based on their occupation, 
-            job level, and number of working adults and children in the household and compares it with the minimum livable wages of the major Metropolitan 
-            areas in the United States of America, as provided by <a href="https://livingwage.mit.edu/" style="text-decoration:underline">MIT</a>. A red-green choropleth map is produced to
-            visually illustrate which Metropolitan areas the user meets the minimum livable wage. </p>
+        <p>The State Finder web application was created in the Fall of 2022 as a Senior Capstone project by Alyiah Proctor, Anne Nguyen, Darlyn Mendez, 
+            and Emily Crabtree, four students at the University of North Carolina at Greensboro. The goal of the web application is to be a tool to 
+            aid people undergoing a career transition, job search, and/or location change, and to make those processes less stressful. The State Finder 
+            web application collects user data based on their occupation, job level, number of working adults, and number of children in the household,  
+            and then compares it with the minimum livable wages of the major metropolitan areas in the United States of America, as provided by 
+            <a href="https://livingwage.mit.edu/" style="text-decoration:underline">MIT</a>. By using the data provided by MIT, this application will
+            give users a more accurate measure of where they can live comfortably, rather than whether or not they can afford a basic grocery budget.
+            The living wage data takes into account average grocery budget per household size, along with the costs of rent, utilities, child care 
+            (if all adultsin the home are working), health care, transporation, and other rudimentary essentials like clothing and personal hygeine
+            products. </p>
+            <p>From the data collected from the user, a red-green choropleth map is produced to visually illustrate which Metropolitan areas the user 
+            meets the minimum livable wage, along with a menu of state names for the user to select for more information. Then, a map of the selected 
+            state is generated, accompanied by more specific details of the metropolitan areas, such as (INSERT).</p>
+            <p></p>
+            <h3 style="text-indent: 3px"> Resources</h3>
+            <div class="contactborder">&nbsp;</div>
+            <p></p>
+            <p>INSERT RESOURCE LINKS</p>
+
     </div>
     {% endblock %}
 </body>

@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, flash
 from app import app
+import os
 import pandas as pd
 import numpy as np
 import pyodbc
@@ -8,6 +9,8 @@ import requests
 import plotly.express as px
 import geopandas as gpd
 from urllib.request import urlopen
+from .forms import ContactForm
+from flask_mail import Message, Mail
 
 #connecting to the data base constants
 server = 'statefinder.database.windows.net'
@@ -33,13 +36,23 @@ one_adult = pd.read_sql_query(q2, conn)
 two_adults_1w = pd.read_sql_query(q3, conn)
 conn.close
 
-
 #temperary reads
 #one_adult = pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '1_Adult', header = 0))
 #two_adults_1w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_1_Working', header = 0))
 two_adults_2w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_Both_Working', header = 0))
 
+mail = Mail()
 
+SECRET_KEY = os.urandom(32)
+
+app.config['SECRET_KEY'] = SECRET_KEY
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_USERNAME"] = 'sfmssgbot@gmail.com'
+app.config["MAIL_PASSWORD"] = 'zpklgtbnupcdvmmy'
+ 
+mail.init_app(app)
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.route('/')
@@ -61,14 +74,32 @@ def index():
 
 @app.route('/')
 @app.route('/about', methods=['GET'])
-
 def about():
     #render about page
     return render_template('about.html')
 
-@app.route('/')
 @app.route('/contact', methods=['GET', 'POST'])
-#def contact():
+def contact():
+  form = ContactForm()
+  
+  if request.method == 'POST':
+    if form.validate() == False:
+        flash('All fields are required.')
+        return render_template('contact.html', form=form)
+        
+    else:
+      msg = Message(form.subject.data, sender='sfmssgbot@gmail.com', recipients=['statefinderhelp@gmail.com'])
+      msg.body = """
+      From: %s
+      Email:  %s;
+      %s
+      """ % (form.name.data, form.email.data, form.message.data)
+      mail.send(msg)
+      
+      return render_template('contact.html', success=True)
+        
+  elif request.method == 'GET':
+    return render_template('contact.html', form=form)
 
 
 @app.route('/')
