@@ -7,26 +7,25 @@ from plotly.callbacks import Points
 from urllib.request import urlopen
 import json
 
+# Connecting to database
+server = 'statefinder.database.windows.net'
+database= 'LivingWage'
+username = 'statefinder'
+password = '{FAll2022}'
+driver = '{ODBC Driver 17 for SQL Server}'
+conn = pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+
+                      ';PORT=1433;DATABASE='+database+';UID='+username+
+                      ';PWD='+ password)
+cursor = conn.cursor()
+
 @app.route('/')
 @app.route('/us_map', methods=['GET', 'POST'])
 def us_map():
-    
-    # Connecting to database
-    server = 'statefinder.database.windows.net'
-    database= 'LivingWage'
-    username = 'statefinder'
-    password = '{FAll2022}'
-    driver = '{ODBC Driver 17 for SQL Server}'
-    conn = pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+
-                          ';PORT=1433;DATABASE='+database+';UID='+username+
-                          ';PWD='+ password)
-    cursor = conn.cursor()
     
     # Getting state data
     q = ("SELECT * FROM state_descriptions;")
     states = pd.DataFrame()
     states = pd.read_sql_query(q, conn)
-    conn.close
     
     # Formatting state hover text
     states['heat_value'] = states['total_population']
@@ -55,13 +54,13 @@ def us_map():
         'Attraction: ' + states['attraction']
     
     # Creating us map
-    fig = go.FigureWidget(go.Figure(go.Choropleth(
+    fig = go.Figure(go.Choropleth(
         locations=states['state_abbreviation'], 
         z=states['heat_value'].astype(float).astype(int), 
         locationmode='USA-states', 
         colorscale='Sunset', 
         colorbar_title = 'Population', 
-        text=states['text'])))
+        text=states['text']))
     fig.update_layout(geo_scope='usa')    
     
     return render_template('us_map.html', fig=fig)
@@ -71,8 +70,9 @@ def us_map():
 def state_map():
     
     # Getting metro area data
-    with urlopen('https://raw.githubusercontent.com/annednguyen00/CSC490/main/metro_area_descriptions.csv') as response: 
-        metro_areas = pd.read_csv(response)
+    q = ("SELECT * FROM metro_area_descriptions;")
+    metro_areas = pd.DataFrame()
+    metro_areas = pd.read_sql_query(q, conn)
     
     # Getting geojson
     with urlopen('https://raw.githubusercontent.com/annednguyen00/CSC490/main/metro_micro.json') as response:
@@ -123,3 +123,5 @@ def state_map():
     fig2.update_geos(fitbounds='locations')
     
     return render_template('state_map.html', fig2=fig2)
+
+conn.close
