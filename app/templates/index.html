@@ -14,13 +14,13 @@
   <br>  
 <div id="selectOcc" class="text-center">
     <p class="text-center">Select your occupation:
-        <select id="occSelect" name="occSelect" method="GET">
-            <option disabled selected>Select</option>
+        <input list="opt" id="occSelect" name="occSelect">
+        <datalist id="opt">
             {% for oc in occupations %}
             <option value="{{oc}}">{{oc}}</option>"
             {% endfor %}
-        </select>
-    </p>
+        </datalist>
+</p>
 </div>
 
 <p></p>

@@ -25,6 +25,7 @@ cursor = conn.cursor()
 q1 = ("SELECT * FROM OCCUPATIONS;")
 q2 = ("SELECT * FROM One_Adult;")
 q3 = ("SELECT * FROM Two_Adults_One_Working;")
+q4 = ("SELECT * FROM Two_Adults_Both_Working;")
 
 #creating the data frames
 occ = pd.DataFrame()
@@ -34,12 +35,13 @@ one_adult = pd.DataFrame()
 occ = pd.read_sql_query(q1, conn)
 one_adult = pd.read_sql_query(q2, conn)
 two_adults_1w = pd.read_sql_query(q3, conn)
+two_adults_2w = pd.read_sql_query(q4, conn)
 conn.close
 
 #temperary reads
 #one_adult = pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '1_Adult', header = 0))
 #two_adults_1w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_1_Working', header = 0))
-two_adults_2w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_Both_Working', header = 0))
+#two_adults_2w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_Both_Working', header = 0))
 
 mail = Mail()
 
