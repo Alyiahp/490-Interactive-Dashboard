@@ -1,0 +1,52 @@
+state_name,state_abbreviation,capital,total_population,total_housing_units,occupied_housing_units,vacant_housing_units,percent_occupied,percent_vacant,attraction
+Alabama,AL,Montgomery,5039877,2313616,1967559,346057,85,15,U.S. Space & Rocket Center
+Alaska,AK,Juneau,732673,327889,271311,56578,82.7,17.3,Denali National Park and Preserve
+Arizona,AZ,Phoenix,7276316,3138685,2817723,320962,89.8,10.2,Grand Canyon National Park
+Arkansas,AR,Little Rock,3025891,1380768,1183675,197093,85.7,14.3,Hot Springs National Park
+California,CA,Sacramento,39237836,14512149,13429063,1083086,92.5,7.5,Golden Gate Bridge
+Colorado,CO,Denver,5812069,2540783,2313042,227741,91,9,Pikes Peak
+Conneticut,CT,Hartford,3605597,1536327,1428313,108014,93,7,Mystic Aquarium
+Delaware,DE,Dover,1003384,457978,395656,62322,86.4,13.6,DiscoverSea Shipwreck Museum
+District of Columbia,DC,District of Columbia,670050,357482,319565,37917,89.4,10.6,White House and the National Mall
+Florida,FL,Tallahassee,21781128,10054509,8565329,1489180,85.2,14.8,Walt Disney World Resort
+Georgia,GA,Atlanta,10799566,4475242,4001109,474133,89.4,10.6,World of Coca-Cola
+Hawaii,HI,Honolulu,1441553,564878,490080,74798,86.8,13.2,Road to Hana
+Idaho,ID,Boise,1900923,775330,693882,81448,89.5,10.5,Kirkham Hot Springs
+Illinois,IL,Springfield,12671469,5440294,4991641,448653,91.8,8.2,Chicago River
+Indiana,IN,Indianapolis,6805985,2950121,2680694,269427,90.9,9.1,Indianapolis Motor Speedway
+Iowa,IA,Des Moines,3193079,1426039,1300467,125572,91.2,8.8,The Field of Dreams
+Kansas,KS,Topeka,2934582,1284353,1159026,125327,90.2,9.8,Oz Museum
+Kentucky,KY,Frankfort,4509394,2008227,1785682,222545,88.9,11.1,Kentucky Horse Park
+Louisiana,LA,Baton Rouge,4624047,2093387,1783924,309463,85.2,14.8,French Quarter
+Maine,ME,Augusta,1372247,744620,593626,150994,79.7,20.3,Acadia National Park
+Maryland,MD,Annapolis,6165129,2546364,2355652,190712,92.5,7.5,National Aquarium
+Massachusetts,MA,Boston,6984723,3017772,2759018,258754,91.4,8.6,Freedom Trail
+Michigan,MI,Lansing,10050811,4590384,4051798,538586,88.3,11.7,Mackinac Island
+Minnesota,MN,Saint Paul,5707390,2517173,2281033,236140,90.6,9.4,Mall of America
+Mississippi,MS,Jackson,2949965,1332041,1129611,202430,84.8,15.2,Elvis Presley Birthplace and Museum
+Missouri,MO,Jefferson City,6168187,2807632,2468726,338906,87.9,12.1,Gateway Arch
+Montana,MT,Helena,1104271,521916,448949,72967,86,14,Glacier National Park
+Nebraska,NE,Lincoln,1963692,854298,785982,68316,92,8,Chimney Rock National Historic Site
+Nevada,NV,Carson City,3143991,1305534,1191380,114154,91.3,8.7,Las Vegas Strip
+New Hampshire,NH,Concord,1388992,643979,548026,95953,85.1,14.9,Mount Washington Cog Railway
+New Jersey,NJ,Trenton,9267130,3779591,3497945,281646,92.5,7.5,Cape May
+New Mexico,NM,Santa Fe,2115877,948042,834007,114035,88,12,White Sands National Park
+New York,NY,Albany,19835913,8530561,7652666,877895,89.7,10.3,Statue of Liberty
+North Carolina,NC,Raleigh,10551162,4801698,4179632,622066,87,13,Wright Brothers National Memorial
+North Dakota,ND,Bismarck,774948,374435,322511,51924,86.1,13.9,Theodore Roosevelt National Park
+Ohio,OH,Chillicothe,11780017,5269498,4832922,436576,91.7,8.3,Rock & Roll Hall of Fame
+Oklahoma,OK,Oklahoma City,3986639,1762113,1547967,214146,87.8,12.2,First Americans Museum
+Oregon,OR,Salem,4246155,1837009,1702599,134410,92.7,7.3,Mount Hood
+Pennslyvania,PA,Harrisburg,12964056,5770472,5228956,541516,90.6,9.4,Liberty Bell
+Rhode Island,RI,Providence,1095610,484925,440170,44755,90.8,9.2,The Breakers
+South Carolina,SC,Columbia,5190705,2395957,2049972,345985,85.6,14.4,Fort Sumter National Monument
+South Dakota,SD,Pierre,895376,400688,356887,43801,89.1,10.9,Mount Rushmore National Memorial
+Tennessee,TN,Nashville,6975218,3087992,2770395,317597,89.7,10.3,Country Music Hall of Fame and Museum
+Texas,TX,Austin,29527941,11867820,10796247,1071573,91,9,The Alamo
+Utah,UT,Salt Lake City,3337975,1190154,1101499,88655,92.6,7.4,Zion National Park
+Vermont,VT,Montpelier,645570,336747,270163,66584,80.2,19.8,Smugglers' Notch Resort
+Virginia,VA,Richmond,8642274,3652329,3331461,320868,91.2,8.8,Colonial Williamsburg
+Washington,WA,Olympia,7738692,3257140,3022255,234885,92.8,7.2,Space Needle
+West Virginia,WV,Charleston,1782959,858462,722201,136261,84.1,15.9,Harpers Ferry
+Wisconsin,WI,Madison,5895908,2748274,2449970,298304,89.1,10.9,Lambeau Field
+Wyoming,WY,Cheyenne,578803,274373,242763,31610,88.5,11.5,Yellowstone National Park
