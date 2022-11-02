@@ -1,0 +1,318 @@
+
+<html>
+    <head>
+        <title>Google Authentication</title>
+        <style>
+           *:focus {
+            outline: none;
+           }
+
+           body {
+            margin: 0;
+            padding: 0;
+            background: #FF7F7F;
+            font-size: 16px;
+            color: #222;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+           }
+
+           #login-box {
+            position: relative;
+            margin: 5% auto;
+            width: 600px;
+            height: 400px;
+            border-radius: 15%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+           }
+
+           .left {
+            position: absoulte;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            padding: 40px;
+            width: 300px;
+            height: 400px;
+           }
+           h1 {
+            margin: 0 0 20px 0;
+            font-weight: 300;
+            font-size: 28px;
+           }
+
+           input[type="text"]
+           input[type="password"] {
+            display: block;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 220px;
+            height: 32px;
+            border: none;
+            border-bottom: 1px solid #AAA;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            font-size: 15px;
+            transition: 0.2s ease;
+           }
+
+           input[type="text"]:focus,
+           input[type="password"]:focus {
+            border-bottom: 2px solid #16a085;
+            color: #16a085;
+            transition: 0.2s ease;
+           }
+
+           input[type="submit"] {
+            margin-top: 28px;
+            width: 120px;
+            height: 32px;
+            background: #16a085;
+            border: none;
+            color: #FFF;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: 0.1s ease;
+            cursor: pointer;
+           }
+
+           input[type="submit"]:hover,
+           input[type="submit"]:focus {
+            opacity: 0.8;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0,4);
+            transition: 0.1s ease;
+           }
+
+           input[type="submit"]:active {
+            opacity: 1;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            transition: 0.1s ease;
+           }
+
+           .or {
+            position: absolute;
+            top: 180px;
+            left: 280px;
+            width: 40px;
+            height: 40px;
+            background: #DDD;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            line-height: 40px;
+            text-align: center;
+           }
+
+           .right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            box-sizing: border-box;
+            padding: 40px;
+            width: 300px;
+            height: 400px;
+            background: url('https://goo.gl/YbktSj');
+            background-size: cover;
+            background-position: center;
+            border-radius: 0 1px 2px 0;
+           }
+
+           .right .loginwidth {
+            display: block;
+            margin-bottom: 40px;
+            font-size: 28px;
+            color: #FFF;
+            text-align: center;
+           }
+
+           button.social-signin {
+            margin-bottom: 20px;
+            width: 220px;
+            height: 36px;
+            border: none;
+            border-radius: 2px;
+            color: #FFF;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            transition: 0.2s ease;
+            cursor: pointer;
+           }
+
+           button.social-signin:hover,
+           button.social-signin:focus {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            transition: 0.2s ease;
+           }
+
+           button.social-signin:active {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            transition: 0.2s ease;
+           }
+
+           button.social-signin.facebook {
+            background: #32508E;
+            border-radius: 15px;
+           }
+
+           button.social-signin.twitter {
+            background: #55ACEE;
+            border-radius: 15px;
+           }
+
+           button.social-signin.google {
+            background: #DD4B39;
+            border-radius: 15px;
+           }
+        </style>
+    </head>
+    <form action="{{ url_for('google_login') }}" method="POST"></form>
+
+    <body>
+        <div id="login-box">
+            <div class="left">
+                <h1>Sign Up</h1>
+
+                <input type="text" id="email" name="email" placeholder="E-mail" />
+                
+                <input type="password" id="password" name="password" placeholder="Password" />
+
+                <input type="submit" id="saveData" name="signup_submit" value="Sign in" />
+            </div>
+
+            <div class="right">
+                <span class="loginwith">Sign in with<br />social network</span>
+
+                <button onClick="facebookSignIn()" class="social-signin facebook" id="facebook_login">Log in with facebook</button>
+                <button class="social-signin twitter" id="twitter_login">Log in with Twitter</button>
+                <button class="social-signin google" id="login">Log in with Google+</button>
+            </div>
+            <div class="or">OR</div>
+        </div>
+    </body>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-analytics.js";
+        import { getAuth, GoogleAuthProvider, FacebookAuthProvider, createUserWithEmailAndPassword, signInWithPopup} from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyClPZ33MRs9DXgAskwnQK0VkPF20T1cYnM",
+          authDomain: "login-state-finder.firebaseapp.com",
+          projectId: "login-state-finder",
+          storageBucket: "login-state-finder.appspot.com",
+          messagingSenderId: "78950357775",
+          appId: "1:78950357775:web:594cd25d9e306f063f3c7a",
+          measurementId: "G-CL6SL3QL6Q"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const provider = new GoogleAuthProvider(app);
+        const auth = getAuth(app);
+
+        login.addEventListener('click', (e) => {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    const credential = GoogleAuthProvider.credentialFromResult(result);
+                    const token = credential.accessToken;
+                    const user = result.user;
+
+                    window.location.href = "http://localhost:5000/index";
+
+                }).catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    const email = error.email;
+                    const credential = GoogleAuthProvider.credentialFromError(error);
+
+                    alert(ErrorMessage);
+
+                });
+        });
+
+        signOut.addEventListener('click',(e)=> {
+            signOut(auth).then(() => {
+
+            }).catch((error) => {
+
+            });
+        });
+
+
+        const app2 = initializeApp(firebaseConfig, "app2");
+
+        const analytics_app2 = getAnalytics(app2);
+
+        const email_password_auth = getAuth(app2);
+
+        saveData.addEventListener('click', (e) => {
+
+            var email = document.getElementByID('email').value;
+
+            var password = document.getElementByID('password').value;
+
+            createUserWithEmailAndPassword(email_password_auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+
+                    alert("User created successfully");
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert(errorMessage);
+                });
+        });
+        
+        // Facebook Login
+
+        window.fbAsyncInit = function() {
+        FB.init ({
+           appId      : '1152055792063982',
+           cookie     : true,
+           xfbml      : true,
+           version    : 'v2.6'
+        });
+      };
+
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+            } (document, 'script', 'facebook-jssdk'));
+
+
+        const app3 = initializeApp(firebaseConfig, "app3");
+
+        const analytics_app3 = getAnalytics(app3);
+
+        const facebook_provider = new firebase.auth.FacebookAuthProvider(app3);
+
+        function facebookSignIn() {
+
+            facebook_provider.addScope("user_birthday");
+            firebase.auth().useDeviceLanguage();
+            firebase.auth().signInWithPopup(facebook_provider).then(function(result) {
+                var token = result.credential.accessToken;
+
+                var user = result.user;
+            }).catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                var email = error.email;
+                var credential = error.credential;
+            });
+        }
+
+    </script>
+</html>

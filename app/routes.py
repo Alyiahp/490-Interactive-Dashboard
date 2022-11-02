@@ -17,7 +17,7 @@ server = 'statefinder.database.windows.net'
 database = 'LivingWage'
 username = 'statefinder'
 password = '{FAll2022}'
-driver = '{ODBC Driver 17 for SQL Server}'
+driver = '{ODBC Driver 18 for SQL Server}'
 conn = pyodbc.connect('DRIVER=' + driver + ';SERVER=tcp:' + server + ';PORT=1433;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
 cursor = conn.cursor()
 
@@ -240,3 +240,10 @@ def calculate_difference(metro_wage, user_wage):
     map_values = map_values.reset_index(drop=True)
 
     return map_values
+
+
+@app.route('/')
+@app.route('/google_login', methods=['GET', 'POST'])
+
+def google_login():
+    return render_template('google_login.html')
