@@ -58,7 +58,7 @@ def us_map():
         locations=states['state_abbreviation'], 
         z=states['heat_value'].astype(float).astype(int), 
         locationmode='USA-states', 
-        colorscale='Sunset', 
+        colorscale='Oranges', 
         colorbar_title = 'Population', 
         text=states['text']))
     fig.update_layout(geo_scope='usa')    
@@ -116,7 +116,7 @@ def state_map():
         featureidkey='properties.NAME', 
         z=(metro_areas[metro_areas['state_abbreviation'] 
                        == selected_state].heat_value).astype(float).astype(int), 
-        colorscale='Sunset', 
+        colorscale='Oranges', 
         colorbar_title = 'Population', 
         text=metro_areas[metro_areas['state_abbreviation'] 
                          == selected_state].text))
