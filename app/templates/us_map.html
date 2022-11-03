@@ -1,7 +1,10 @@
+<head>
+	<title>Country Map</title>
+</head>
 {% extends "base.html" %}
-
 {% block content %}
-    {{ fig.to_html() | safe}}
+	<div class="container-fluid" style="padding-top: 60px">
+		{{ fig.to_html() | safe}}
     <form method="post">
         <select name="states" id="states">
 	          <option value="AL">Alabama</option>
@@ -58,4 +61,5 @@
         </select>
         <input type="submit" formaction ='/state_map' value="Select State">
     </form>
+</div>
 {% endblock %}

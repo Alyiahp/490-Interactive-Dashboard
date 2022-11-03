@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>State Finder</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -9,6 +8,109 @@
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-analytics.js";
+    import { getAuth, GoogleAuthProvider, FacebookAuthProvider, createUserWithEmailAndPassword, signInWithPopup} from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyClPZ33MRs9DXgAskwnQK0VkPF20T1cYnM",
+      authDomain: "login-state-finder.firebaseapp.com",
+      projectId: "login-state-finder",
+      storageBucket: "login-state-finder.appspot.com",
+      messagingSenderId: "78950357775",
+      appId: "1:78950357775:web:594cd25d9e306f063f3c7a",
+      measurementId: "G-CL6SL3QL6Q"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const provider = new GoogleAuthProvider(app);
+    const auth = getAuth(app);
+
+    login.addEventListener('click', (e) => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+                window.location.href = "http://localhost:5000/index";
+            }).catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.email;
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                alert(ErrorMessage);
+            });
+    });
+
+    signOut.addEventListener('click',(e)=> {
+        signOut(auth).then(() => {
+        }).catch((error) => {
+        });
+    });
+
+    const app2 = initializeApp(firebaseConfig, "app2");
+    const analytics_app2 = getAnalytics(app2);
+    const email_password_auth = getAuth(app2);
+    saveData.addEventListener('click', (e) => {
+        var email = document.getElementByID('email').value;
+        var password = document.getElementByID('password').value;
+        createUserWithEmailAndPassword(email_password_auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                alert("User created successfully");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(errorMessage);
+            });
+    });
+    
+    // Facebook Login
+    window.fbAsyncInit = function() {
+    FB.init ({
+       appId      : '1152055792063982',
+       cookie     : true,
+       xfbml      : true,
+       version    : 'v2.6'
+    });
+  };
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+        } (document, 'script', 'facebook-jssdk'));
+
+    const app3 = initializeApp(firebaseConfig, "app3");
+    const analytics_app3 = getAnalytics(app3);
+    const facebook_provider = new firebase.auth.FacebookAuthProvider(app3);
+    function facebookSignIn() {
+        facebook_provider.addScope("user_birthday");
+        firebase.auth().useDeviceLanguage();
+        firebase.auth().signInWithPopup(facebook_provider).then(function(result) {
+            var token = result.credential.accessToken;
+            var user = result.user;
+        }).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var email = error.email;
+            var credential = error.credential;
+        });
+    }
+
+</script>
   <style>
   body {
     font: 400 15px Lato, sans-serif;
@@ -17,12 +119,10 @@
     background: #f5f0e1;
   }
   h1 {
-    font-size: 24px;
-    padding-bottom: 2px; 
-    line-height: 1.375em;
+    margin: 0 0 20px 0;
+    font-weight: 300;
+    font-size: 28px;
     color: #303030;
-    font-weight: 400;
-    margin-bottom: 10px;
   }  
   h2 {
     font-size: 16px;
@@ -102,49 +202,11 @@
   .item span {
     font-style: normal;
   }
-  .panel {
-    border: 1px solid #DF362D; 
-    border-radius:0 !important;
-    transition: box-shadow 0.5s;
-  }
-  .panel:hover {
-    box-shadow: 5px 0px 40px rgba(0,0,0, .2);
-  }
-  .panel-footer .btn:hover {
-    border: 1px solid #DF362D;
-    background-color: #f5f0e1 !important;
-    color: #DF362D;
-  }
-  .panel-heading {
-    color: #fff !important;
-    background-color: #DF362D !important;
-    padding: 25px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-  }
-  .panel-footer {
-    background-color: #f5f0e1 !important;
-  }
-  .panel-footer h3 {
-    font-size: 32px;
-  }
-  .panel-footer h1 {
-    color: #aaa;
-    font-size: 14px;
-  }
-  .panel-footer .btn {
-    margin: 15px 0;
-    background-color: #DF362D;
-    color: #fff;
-  }
   .footerc{
     position: fixed;     
-       text-align: center;    
-       bottom: 0px; 
-       width: 100%;
+    text-align: center;    
+    bottom: 0px; 
+    width: 100%;
   }
   .navbar {
     margin-bottom: 0;
@@ -384,7 +446,150 @@ form input#submit:hover{
   padding: 10px;
   width: 400px;
 }
-  </style>
+
+/* Login in styling */
+*:focus {
+    outline: none;
+}
+#login-box {
+    position: relative;
+    margin: 5% auto;
+    width: 600px;
+    height: 400px;
+    border-radius: 15%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.left {
+    position: absoulte;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 300px;
+    height: 400px;
+}
+
+input[type="text"]
+input[type="password"] {
+    display: block;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 220px;
+    height: 32px;
+    border: none;
+    border-bottom: 1px solid #AAA;
+    font-weight: 400;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-bottom: 2px solid #DF362D;
+    color: #303030;
+    transition: 0.2s ease;
+}
+
+input[type="submit"] {
+    margin-top: 28px;
+    width: 120px;
+    height: auto;
+    background: #DF362D;
+    border: none;
+    color: #FFF;
+    font-weight: 500;
+    transition: 0.1s ease;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover,
+input[type="submit"]:focus {
+    opacity: 0.8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0,4);
+    transition: 0.1s ease;
+}
+
+input[type="submit"]:active {
+    opacity: 1;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: 0.1s ease;
+}
+
+.or {
+    position: absolute;
+    top: 180px;
+    left: 280px;
+    width: 40px;
+    height: 40px;
+    background: #DDD;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    line-height: 40px;
+    text-align: center;
+}
+
+.right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 300px;
+    height: 400px;
+    background: url('https://goo.gl/YbktSj');
+    background-size: cover;
+    background-position: center;
+    border-radius: 0 1px 2px 0;
+}
+
+.right .loginwidth {
+    display: block;
+    margin-bottom: 40px;
+    font-size: 28px;
+    color: #FFF;
+    text-align: center;
+}
+
+button.social-signin {
+    margin-bottom: 20px;
+    width: 220px;
+    height: 36px;
+    border: none;
+    border-radius: 2px;
+    color: #FFF;
+    font-weight: 500;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+button.social-signin:hover,
+button.social-signin:focus {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: 0.2s ease;
+}
+
+button.social-signin:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: 0.2s ease;
+}
+
+button.social-signin.facebook {
+    background: #32508E;
+    border-radius: 15px;
+}
+
+button.social-signin.twitter {
+    background: #55ACEE;
+    border-radius: 15px;
+}
+
+button.social-signin.google {
+    background: #DD4B39;
+    border-radius: 15px;
+}
+</style>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
@@ -463,6 +668,8 @@ form input#submit:hover{
         .catch((err) => { alert("Oops an error has occured. 2"); });
         return false;
 }
+
+
       </script>
       
       </body>

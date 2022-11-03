@@ -1,3 +1,7 @@
+<head>
+    <title>About</title>
+
+</head>
 {% extends "base.html" %}
     {% block content %}
     <div class="container-fluid" style="padding-top: 50px">
@@ -7,21 +11,29 @@
         <p>The State Finder web application was created in the Fall of 2022 as a Senior Capstone project by Alyiah Proctor, Anne Nguyen, Darlyn Mendez, 
             and Emily Crabtree, four students at the University of North Carolina at Greensboro. The goal of the web application is to be a tool to 
             aid people undergoing a career transition, job search, and/or location change, and to make those processes less stressful. The State Finder 
-            web application collects user data based on their occupation, job level, number of working adults, and number of children in the household,  
-            and then compares it with the minimum livable wages of the major metropolitan areas in the United States of America, as provided by 
-            <a href="https://livingwage.mit.edu/" style="text-decoration:underline">MIT</a>. By using the data provided by MIT, this application will
-            give users a more accurate measure of where they can live comfortably, rather than whether or not they can afford a basic grocery budget.
-            The living wage data takes into account average grocery budget per household size, along with the costs of rent, utilities, child care 
-            (if all adultsin the home are working), health care, transporation, and other rudimentary essentials like clothing and personal hygeine
-            products. </p>
-            <p>From the data collected from the user, a red-green choropleth map is produced to visually illustrate which Metropolitan areas the user 
-            meets the minimum livable wage, along with a menu of state names for the user to select for more information. Then, a map of the selected 
-            state is generated, accompanied by more specific details of the metropolitan areas, such as (INSERT).</p>
+            web application collects user data based on their occupation, job level, number of working adults, and number of children in the household (up to 3). 
+            According to the occupation and job level provided, the user's likely salary (as collected by the United States Burea of Labor Statistics<sup>1</sup>)  
+            is found, and is then compared with the minimum livable wages of the major metropolitan areas in the United States of America for the number of 
+            working adults and children living in the household, as provided by MIT<sup>2</sup>. </p>
+            <p>By using the data provided by MIT, this application will give users a more accurate measure of where they can live comfortably, rather 
+            than whether or not they can afford a basic grocery budget. The living wage data takes into account a basic grocery budget for the household size, 
+            along with the costs of rent, utilities, child care (if all adults in the home are working), health insurance, transporation, and other rudimentary 
+            essentials, such as clothing and personal hygeine products. This calculated living wage surpasses wages below the poverty line, though does not
+            account for nonessentials, such as traveling or entertainment. </p>
+            <p>From the data collected from the user, a red-green choropleth map is produced to visually illustrate which metropolitan areas for which the user 
+            meets the minimum livable wage, along with a button that redirects the user to a state infographic map. This map features a hover option for the user
+            to learn more information about specific states, such as state capital, total population, number of housing units, the number and percentage of
+            occupied housing units, number and percentage of vacant housing units, and a major attraction, as provided by the United States Census Bureau<sup>3</sup>. From there, 
+            the user can select a state from another menu, which provides a map of the selected state and the metropolitan areas within. By hovering over the 
+            areas on this map, the user can find population and housing information specific to the area.</p>
             <p></p>
             <h3 style="text-indent: 3px"> Resources</h3>
             <div class="contactborder">&nbsp;</div>
             <p></p>
-            <p>INSERT RESOURCE LINKS</p>
+            <p><sup>1</sup><a href="https://www.bls.gov/oes/current/oes_nat.htm" style="text-decoration:underline">National Occupational Employment and 
+                Wage Estimates- United States</a></p>
+            <p><sup>2</sup><a href="https://livingwage.mit.edu/" style="text-decoration:underline">MIT's Living Wage Calculator</a></p>
+            <p><sup>3</sup><a href="https://data.census.gov/cedsci/" style="text-decoration:underline">United States Census Bureau</a></p>
 
     </div>
     {% endblock %}

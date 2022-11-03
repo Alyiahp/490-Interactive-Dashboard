@@ -1,8 +1,13 @@
+<head>
+    <title>State Map</title>
+</head>
 {% extends "base.html" %}
-
 {% block content %}
+<div class="container-fluid" style="padding-top: 60px">
     {{ fig2.to_html() | safe}}
     <form method="post">
+        <p></p>
         <input type="submit" formaction ='/us_map' value="Back to US">
     </form>
+    </div>
 {% endblock %}

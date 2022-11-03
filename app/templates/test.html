@@ -1,19 +1,21 @@
+<head>
+    <title>Livable Areas Map</title>
+</head>
 {% extends "base.html" %}
-<!DOCTYPE html>
-<head></head>
-<body>
     {% block content %}
-    <div class="container-fluid" style="padding-top: 40px">
     {% if fig is string %}
+    <div class="container-fluid" style="padding-top: 60px"></div>
         <p> Unfortunately we do not have sufficient data for your selected position and experience level. Please try a different experience level or ocupation. We appologize for the inconvienience. </p>
-     {% else %}
+    </div>
+        {% else %}
+        <div class="container-fluid" style="padding-top: 80px">
         {{ fig.to_html() | safe}}
+        <p></p>
         <form method="post">
             <input type="submit" formaction ='/us_map' value="Go to Infographics">
         </form>
+        <p></p>
         {{ table.to_html() | safe}}
-    </div>
+        </div>
     {% endif %}
     {% endblock %}
-</body>
-</html>
