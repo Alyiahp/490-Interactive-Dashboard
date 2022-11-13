@@ -14,7 +14,7 @@
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-analytics.js";
-    import { getAuth, GoogleAuthProvider, FacebookAuthProvider, createUserWithEmailAndPassword, signInWithPopup} from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup} from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
   
@@ -58,16 +58,36 @@
         });
     });
 
-    const app2 = initializeApp(firebaseConfig, "app2");
+    // Import the functions you need from the SDKs you need
+
+import {signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js";
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig_email_password = {
+  apiKey: "AIzaSyAb7rHXV8OP62eQxYVKLgkuMRiq-XL7Gcg",
+  authDomain: "state-finder-dev-login.firebaseapp.com",
+  projectId: "state-finder-dev-login",
+  storageBucket: "state-finder-dev-login.appspot.com",
+  messagingSenderId: "376005929618",
+  appId: "1:376005929618:web:81cc5aecb222fd2a46144b",
+  measurementId: "G-2YWDLWJGY1"
+};
+
+
+    const app2 = initializeApp(firebaseConfig_email_password);
     const analytics_app2 = getAnalytics(app2);
     const email_password_auth = getAuth(app2);
     saveData.addEventListener('click', (e) => {
         var email = document.getElementByID('email').value;
         var password = document.getElementByID('password').value;
-        createUserWithEmailAndPassword(email_password_auth, email, password)
+        signInWithEmailAndPassword(email_password_auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                alert("User created successfully");
+                window.location.href = "http://localhost:5000/index";
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -75,14 +95,14 @@
                 alert(errorMessage);
             });
     });
-    
+
     // Facebook Login
     window.fbAsyncInit = function() {
     FB.init ({
        appId      : '1152055792063982',
        cookie     : true,
        xfbml      : true,
-       version    : 'v2.6'
+       version    : 'v15.0'
     });
   };
     (function(d, s, id) {
@@ -93,13 +113,13 @@
         fjs.parentNode.insertBefore(js, fjs);
         } (document, 'script', 'facebook-jssdk'));
 
-    const app3 = initializeApp(firebaseConfig, "app3");
+    const app3 = initializeApp(firebaseConfig_facebook, "app3");
     const analytics_app3 = getAnalytics(app3);
     const facebook_provider = new firebase.auth.FacebookAuthProvider(app3);
     function facebookSignIn() {
         facebook_provider.addScope("user_birthday");
         firebase.auth().useDeviceLanguage();
-        firebase.auth().signInWithPopup(facebook_provider).then(function(result) {
+        firebase.auth().signInWithRedirect(facebook_provider).then(function(result) {
             var token = result.credential.accessToken;
             var user = result.user;
         }).catch(function(error) {

@@ -17,7 +17,7 @@ server = 'statefinder.database.windows.net'
 database = 'LivingWage'
 username = 'statefinder'
 password = '{FAll2022}'
-driver = '{ODBC Driver 17 for SQL Server}'
+driver = '{ODBC Driver 18 for SQL Server}'
 conn = pyodbc.connect('DRIVER=' + driver + ';SERVER=tcp:' + server + ';PORT=1433;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
 cursor = conn.cursor()
 
@@ -94,7 +94,6 @@ def contact():
       automsg.body = """
       %s,
       Thank you for reaching out to the State Finder team. We have received your message regarding %s and will be in contact with you shortly.
-
       Yours,
       State Finder Admins
       """ % (form.name.data, form.subject.data)
