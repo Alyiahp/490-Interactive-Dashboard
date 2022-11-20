@@ -3,7 +3,6 @@ from app import app
 import pyodbc
 import pandas as pd
 import plotly.graph_objects as go
-from plotly.callbacks import Points
 from urllib.request import urlopen
 import json
 
@@ -61,7 +60,8 @@ def us_map():
         colorscale='Oranges', 
         colorbar_title = 'Population', 
         text=states['text']))
-    fig.update_layout(geo_scope='usa')    
+    fig.update_layout(title_text='US Infographic', 
+                      geo_scope='usa')    
     
     return render_template('us_map.html', fig=fig)
 
@@ -120,6 +120,7 @@ def state_map():
         colorbar_title = 'Population', 
         text=metro_areas[metro_areas['state_abbreviation'] 
                          == selected_state].text))
+    fig2.update_layout(title_text=selected_state + ' Infographic')
     fig2.update_geos(fitbounds='locations')
     
     return render_template('state_map.html', fig2=fig2)
