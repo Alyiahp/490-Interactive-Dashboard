@@ -17,7 +17,7 @@ server = 'statefinder.database.windows.net'
 database = 'LivingWage'
 username = 'statefinder'
 password = '{FAll2022}'
-driver = '{ODBC Driver 18 for SQL Server}'
+driver = '{ODBC Driver 17 for SQL Server}'
 conn = pyodbc.connect('DRIVER=' + driver + ';SERVER=tcp:' + server + ';PORT=1433;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
 cursor = conn.cursor()
 
@@ -38,10 +38,7 @@ two_adults_1w = pd.read_sql_query(q3, conn)
 two_adults_2w = pd.read_sql_query(q4, conn)
 conn.close
 
-#temperary reads
-#one_adult = pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '1_Adult', header = 0))
-#two_adults_1w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_1_Working', header = 0))
-#two_adults_2w = [] #pd.DataFrame(pd.read_excel('/Users/alyia/state_finder/venv/app/sfd.xlsx',sheet_name = '2_Adults_Both_Working', header = 0))
+
 
 mail = Mail()
 
@@ -60,16 +57,9 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.route('/')
 @app.route('/index', methods=['GET'])
 
+#sending occupations list to index
 def index():
-
-    #query
-    #q = ("SELECT * FROM OCCUPATIONS;")
-    #occ = pd.DataFrame()
-
-    #saving sql table as panda dataframe
-    #occ = pd.read_sql_query(q, conn)
-    #conn.close
-    
+ 
     send = occ['OCC_TITLE']
     #sending data to html files
     return render_template('index.html', occupations = send)
@@ -80,6 +70,7 @@ def about():
     #render about page
     return render_template('about.html')
 
+#render contact page
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
   form = ContactForm()
@@ -114,8 +105,8 @@ def contact():
 
 
 @app.route('/')
-@app.route('/test', methods=['POST'])
-def test():
+@app.route('/populateMap', methods=['POST'])
+def populateMap():
     
     #getting data from index form
      occupation = request.form['occSelect']
@@ -174,7 +165,6 @@ def test():
          f = requests.get(url)
          data = f.json()
   
-         missing = []
          areas_geo = []
          tmp = b.set_index('ID')
 
@@ -195,11 +185,7 @@ def test():
                 'geometry': geometry,
                 'id':area_name
             })
-          # if area is not found and is classified as metro M1  
-          else:
-              if area['properties']['LSAD'] == "M1":
-                    missing.append(area_name)
-
+          
          metro_json = {'type': 'FeatureCollection', 'features': areas_geo}
          
          #if max residual income is negative all reds for the map
@@ -233,7 +219,7 @@ def test():
        
 
      
-     return render_template('test.html', table = b, fig = fig)
+     return render_template('populateMap.html', table = b, fig = fig)
 
 
 
@@ -241,8 +227,8 @@ def calculate_difference(metro_wage, user_wage):
     #Making ID match geogson file names
     metro_wage['metro_area'] = metro_wage['metro_area'].apply(lambda x: x.split('_')[0])
     metro_wage['ID'] = metro_wage['metro_area'].fillna('') + ', ' + metro_wage['state_name'].fillna('')
-   #metro_wage['ID'] = metro_wage['ID'].str.strip(', ')
-
+   
+    #calculating value
     map_values = pd.DataFrame(metro_wage['ID'])
     map_values['Residual Income'] = int(user_wage) - metro_wage.iloc[:,2].astype(int)
     map_values =  map_values.sort_values(by=['Residual Income'], ascending=False)
