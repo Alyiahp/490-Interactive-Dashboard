@@ -1,3 +1,1 @@
-web:
-gunicorn
-statefinder:app
+web: flask translate compile; gunicorn microblog:app
