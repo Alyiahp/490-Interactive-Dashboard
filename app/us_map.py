@@ -1,20 +1,19 @@
 from flask import render_template, request
 from app import app
-import pyodbc
+#import pyodbc
 import pandas as pd
 import plotly.graph_objects as go
 from urllib.request import urlopen
 import json
+import pymssql  
 
 # Connecting to database
-server = 'statefinder.database.windows.net'
-database= 'LivingWage'
-username = 'statefinder'
-password = '{FAll2022}'
-driver = '{ODBC Driver 18 for SQL Server}'
-conn = pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+
-                      ';PORT=1433;DATABASE='+database+';UID='+username+
-                      ';PWD='+ password)
+#server = 'statefinder.database.windows.net'
+#database= 'LivingWage'
+#username = 'statefinder'
+#password = '{FAll2022}'
+#driver = '{ODBC Driver 18 for SQL Server}'
+conn = pymssql.connect(server='statefinder.database.windows.net', user='statefinder@statefinder.database.windows.net', password='FAll2022', database='LivingWage')
 cursor = conn.cursor()
 
 @app.route('/')

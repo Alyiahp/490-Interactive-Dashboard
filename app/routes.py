@@ -3,7 +3,7 @@ from app import app
 import os
 import pandas as pd
 import numpy as np
-import pyodbc
+#import pyodbc
 import json
 import requests
 import plotly.express as px
@@ -11,14 +11,16 @@ import geopandas as gpd
 from urllib.request import urlopen
 from .forms import ContactForm
 from flask_mail import Message, Mail
+import pymssql  
 
 #connecting to the data base constants
-server = 'statefinder.database.windows.net'
-database = 'LivingWage'
-username = 'statefinder'
-password = '{FAll2022}'
-driver = '{ODBC Driver 17 for SQL Server}'
-conn = pyodbc.connect('DRIVER=' + driver + ';SERVER=tcp:' + server + ';PORT=1433;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+#server = 'statefinder.database.windows.net'
+#database = 'LivingWage'
+#username = 'statefinder'
+#password = '{FAll2022}'
+#driver = '{ODBC Driver 17 for SQL Server}'
+#conn = pyodbc.connect('DRIVER=' + driver + ';SERVER=tcp:' + server + ';PORT=1433;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+conn = pymssql.connect(server='statefinder.database.windows.net', user='statefinder@statefinder.database.windows.net', password='FAll2022', database='LivingWage')
 cursor = conn.cursor()
 
 #creating the squeries
