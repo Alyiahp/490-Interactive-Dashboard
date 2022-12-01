@@ -42,7 +42,7 @@
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user;
-                window.location.href = "http://localhost:5000/index";
+                window.location.href = "https://statefinder.herokuapp.com/index";
             }).catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -133,6 +133,7 @@ const firebaseConfig_email_password = {
 </script>
   <style>
   body {
+    position: relative;
     font: 400 15px Lato, sans-serif;
     line-height: 1.8;
     color: #303030;
@@ -181,17 +182,6 @@ const firebaseConfig_email_password = {
     padding-bottom: 3%;
     background-color: #f5f0e1;
   }
-  .bg-grey {
-    background-color: #f6f6f6;
-  }
-  .logo-small {
-    color: #DF362D;
-    font-size: 50px;
-  }
-  .logo {
-    color: #DF362D;
-    font-size: 200px;
-  }
   .thumbnail {
     padding: 0 0 15px 0;
     border: none;
@@ -201,16 +191,6 @@ const firebaseConfig_email_password = {
     width: 100%;
     height: 100%;
     margin-bottom: 10px;
-  }
-  .carousel-control.right, .carousel-control.left {
-    background-image: none;
-    color: #DF362D;
-  }
-  .carousel-indicators li {
-    border-color: #DF362D;
-  }
-  .carousel-indicators li.active {
-    background-color: #DF362D;
   }
   .item h1 {
     font-size: 19px;
@@ -223,7 +203,7 @@ const firebaseConfig_email_password = {
     font-style: normal;
   }
   .footerc{
-    position: fixed;     
+    position: relative;    
     text-align: center;    
     bottom: 0px; 
     width: 100%;
@@ -251,14 +231,11 @@ const firebaseConfig_email_password = {
     color: #fff !important;
   }
   footer {
-    position: absolute; 
-    bottom: 5px;
+    position: fixed;     
+    text-align: center;    
+    bottom: 0px; 
+    width: 100%;
 }
-  footer .glyphicon {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #DF362D;
-  }
   .slideanim {visibility:hidden;}
   .slide {
     animation-name: slide;
@@ -302,7 +279,6 @@ const firebaseConfig_email_password = {
       font-size: 150px;
     }
   }
-
   .button {
   background-color: none; /* Green */
   border: none;
@@ -316,79 +292,31 @@ const firebaseConfig_email_password = {
   transition-duration: 0.4s;
   cursor: pointer;
 }
-
 .button1 {
   background-color: #DF362D; 
   color: #f5f0e1; 
   border: 1px solid #f5f0e1;
 }
-
 .button1:hover {
   background-color: #f5f0e1;
   color: #DF362D;
   border: 1px solid #DF362D;
-}
-
-.dropbtn {
-  background-color: #f5f0e1;
-  color: #303030;
-  padding: 4px;
-  font-size: 16px;
-  border: 1px solid #303030;
-  display: inline-block !important;
-  cursor: pointer;
-}
-
-.dropdown {
-  position: relative;
-  right: auto;
-  left: 50%;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: #303030;
-  padding: 16px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {background-color: #f1f1f1}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: #f5f0e1;
 }
 a:link {
   color: #303030;
   background-color: transparent;
   text-decoration: none;
 }
-
 a:visited {
   color: #919191;
   background-color: transparent;
   text-decoration: none;
 }
-
 a:hover {
   color: #DF362D;
   background-color: transparent;
   text-decoration: none;
 }
-
 a:active {
   color: #DF362D;
   background-color: transparent;
@@ -402,7 +330,6 @@ form label {
   display: block;
   padding: 10px 0;
 }
- 
 form input#name,
 form input#email,
 form input#subject {
@@ -415,7 +342,6 @@ form input#subject {
   padding: 5px;
   font-size: 1.1em;
 }
- 
 form textarea#message {
   width: 500px;
   height: 100px;
@@ -428,7 +354,6 @@ form textarea#message {
   padding: 5px;
   font-size: 1.1em;
 }
- 
 form input#submit {
   display: block;
   -webkit-border-radius: 3px; 
@@ -447,7 +372,6 @@ form input#submit {
   background-image: -o-linear-gradient(top, #f4f4f4, #e5e5e5);
   background-image: linear-gradient(top, #f4f4f4, #e5e5e5);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f4f4f4, endColorstr=#e5e5e5);
 }
- 
 form input#submit:hover{
   cursor: pointer;
   border:1px solid #c1c1c1; 
@@ -479,7 +403,6 @@ form input#submit:hover{
     border-radius: 15%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
-
 .left {
     position: absoulte;
     top: 0;
@@ -489,7 +412,6 @@ form input#submit:hover{
     width: 300px;
     height: 400px;
 }
-
 input[type="text"]
 input[type="password"] {
     display: block;
@@ -504,14 +426,12 @@ input[type="password"] {
     font-size: 15px;
     transition: 0.2s ease;
 }
-
 input[type="text"]:focus,
 input[type="password"]:focus {
     border-bottom: 2px solid #DF362D;
     color: #303030;
     transition: 0.2s ease;
 }
-
 input[type="submit"] {
     width: auto;
     height: auto;
@@ -522,20 +442,17 @@ input[type="submit"] {
     transition: 0.1s ease;
     cursor: pointer;
 }
-
 input[type="submit"]:hover,
 input[type="submit"]:focus {
     opacity: 0.8;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0,4);
     transition: 0.1s ease;
 }
-
 input[type="submit"]:active {
     opacity: 1;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     transition: 0.1s ease;
 }
-
 .or {
     position: absolute;
     top: 180px;
@@ -548,7 +465,6 @@ input[type="submit"]:active {
     line-height: 40px;
     text-align: center;
 }
-
 .right {
     position: absolute;
     top: 0;
@@ -562,7 +478,6 @@ input[type="submit"]:active {
     background-position: center;
     border-radius: 0 1px 2px 0;
 }
-
 .right .loginwidth {
     display: block;
     margin-bottom: 40px;
@@ -570,7 +485,6 @@ input[type="submit"]:active {
     color: #FFF;
     text-align: center;
 }
-
 button.social-signin {
     margin-bottom: 20px;
     width: 220px;
@@ -582,28 +496,23 @@ button.social-signin {
     transition: 0.2s ease;
     cursor: pointer;
 }
-
 button.social-signin:hover,
 button.social-signin:focus {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     transition: 0.2s ease;
 }
-
 button.social-signin:active {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     transition: 0.2s ease;
 }
-
 button.social-signin.facebook {
     background: #32508E;
     border-radius: 15px;
 }
-
 button.social-signin.twitter {
     background: #55ACEE;
     border-radius: 15px;
 }
-
 button.social-signin.google {
     background: #DD4B39;
     border-radius: 15px;
@@ -611,7 +520,6 @@ button.social-signin.google {
 </style>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
-
   <!-- Fixed navigation bar -->
   <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
@@ -632,11 +540,12 @@ button.social-signin.google {
     </div>
   </div>
 </nav>
+    <!-- This is where other page content will go-->
     {% block content %}{% endblock %}
-    <div class="footerc text-center" style="position: relative">
+    <div class="footerc text-center">
         <p>© 2022 Alyiah Proctor, Anne Nguyen, Darlyn Mendez, and Emily Crabtree</p>
     </div>
-      
+
       <script>
       $(document).ready(function(){
         // Add smooth scrolling to all links in navbar + footer link
@@ -645,26 +554,21 @@ button.social-signin.google {
           if (this.hash !== "") {
             // Prevent default anchor click behavior
             event.preventDefault();
-      
             // Store hash
             var hash = this.hash;
-      
             // Using jQuery's animate() method to add smooth page scroll
             // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
             $('html, body').animate({
               scrollTop: $(hash).offset().top
             }, 900, function(){
-         
               // Add hash (#) to URL when done scrolling (default click behavior)
               window.location.hash = hash;
             });
           } // End if
         });
-        
         $(window).scroll(function() {
           $(".slideanim").each(function(){
             var pos = $(this).offset().top;
-      
             var winTop = $(window).scrollTop();
               if (pos < winTop + 600) {
                 $(this).addClass("slide");
@@ -672,24 +576,6 @@ button.social-signin.google {
           });
         });
       })
-      // (A) SEND CONTACT FORM
-      function send () {
-        // (A1) PREVENT MULTIPLE SUBMIT
-        document.getElementById("contact").disabled = true;
-        // (A2) COLLECT FORM DATA
-        let data = new FormData(document.getElementById("contactForm"));
-        // (A3) SEND!
-        fetch("/send", { method:"POST", body:data })
-        .then((res) => {
-            if (res.status==200) { location.href = "/thank"; }
-            else { alert("Oops an error has occured. 1"); }
-        })
-        .catch((err) => { alert("Oops an error has occured. 2"); });
-        return false;
-}
-
-
       </script>
-      
       </body>
       </html>
