@@ -38,8 +38,7 @@ two_adults_1w = pd.read_sql_query(q3, conn)
 two_adults_2w = pd.read_sql_query(q4, conn)
 conn.close
 
-
-
+# Create flask mail connection to email
 mail = Mail()
 
 SECRET_KEY = os.urandom(32)
@@ -75,11 +74,13 @@ def about():
 def contact():
   form = ContactForm()
   
+  # Check if all fields filled
   if request.method == 'POST':
     if form.validate() == False:
         flash('All fields are required.')
         return render_template('contact.html', form=form)
-        
+    
+    # Auto send email, send email to help email
     else:
       automsg = Message(subject='We received your contact request', sender='sfmssgbot@gmail.com', recipients=[form.email.data])
       automsg.body = """
